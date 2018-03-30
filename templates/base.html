@@ -1,0 +1,18 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Patua+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:800" rel="stylesheet">
+    {% include 'base/css.html' %}
+    {% block base_head %}{% endblock %}
+  </head>
+  <body style="background:#f9f9f9;font-family: 'Patua One', cursive;">
+    {% include 'base/navbar.html' with brand_name='BooksGrab' %}
+    {% block content %}{% endblock %}
+    {% include 'base/js.html' %}
+    {% include 'base/footer.html' %}
+  </body>
+</html>

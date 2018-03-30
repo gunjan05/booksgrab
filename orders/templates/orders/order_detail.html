@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="conatiner">
+  <div class='row'>
+    <div class='col-12 col-md-6 mx-auto'>
+         <h3>Order ID: {{ object.order_id }}</h3>
+          <hr>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-12 col-md-6 mx-auto'>
+      <p>Items: {% for product in object.cart.products.all %}{{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+      <p>Shipping Address: {{ object.shipping_address.get_address }}</p>
+      <p>Billing Address: {{ object.shipping_address.get_address }}</p>
+      <p>Order Total: <i class="fas fa-rupee-sign"></i> {{ object.total }}</p>
+      <p>Order Status: {{ object.get_status }}</p>
+      {% if object.status == 'Delivered' %}
+      <p>Delivered On: {{ object.delivery_date }}</p>
+      <p>Delivered by: {{ object.courier_company }}</p>
+      {% endif %}
+      <!-- {% if object.status == 'Pending' or object.status == 'Paid' or object.status == 'Shipped' or object.status == 'Created' %}
+      {% include 'orders/cancel_order.html' %}
+      {% endif %} -->
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+<form method='POST' action='{% if action_url %}{{ action_url }}{% else %}{% url "login" %}{% endif %}'>
+  {% csrf_token %}
+    {% if next_url %}
+    <input type="hidden" name="next" value="{{ next_url }}" />
+    {% endif %}
+    {% if address_type %}
+        <input type="hidden" name="address_type" value="{{ address_type }}" />
+    {% endif %}
+    <div class="row mt-2 ml-1 mr-1">
+      <label for="address_line_1">Fullname:</label>
+        {{ form.fullname }}
+    </div>
+    <div class="row mt-2 ml-1 mr-1">
+      <label for="address_line_1">Address:</label>
+        {{ form.address_line_1 }}
+    </div>
+    <div class="row mt-2 ml-1 mr-1">
+      <label for="address_line_1">Address 2:</label>
+        {{ form.address_line_2 }}
+    </div>
+    <div class="row mt-2 ml-1 mr-1">
+      <label for="address_line_1">State:</label>
+        {{ form.state }}
+    </div>
+    <div class="row mt-2">
+      <div class="col-lg-6">
+        <label for="address_line_1">City:</label>
+        {{ form.city }}
+      </div>
+      <div class="col-lg-6">
+        <label for="address_line_1">PinCode:</label>
+        {{ form.postal_code }}
+      </div>
+    </div>
+    <div class="row mt-2 ml-1 mr-1">
+      <label for="address_line_1">Country:</label>
+      {{ form.country }}
+    </div>
+  <button type="submit" class="btn btn-outline-primary btn-block mt-3 mb-3" name="button">
+    Proceed to Order Summary <i class="fas fa-arrow-circle-right d-inline"></i>
+  </button>
+</form>

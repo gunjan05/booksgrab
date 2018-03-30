@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-around">
+    {% for obj in object_list %}
+    <div class="my-3">
+      {% if obj.active %}
+        {% include 'products/snippets/card.html' with instance=obj %}
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

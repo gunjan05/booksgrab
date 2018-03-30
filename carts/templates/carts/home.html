@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% url 'products:list' as product_home_url %}
+
+{% block content %}
+<div class="container">
+  {% if cart.products.exists %}
+    <h1>Cart <i class="fas fa-shopping-cart" style="color:#2277BC;"></i></h1>
+    <h5><span class="navbar-cart-count badge badge-pill badge-primary" style="background-color:#2277BC;">{{ request.session.cart_total }}</span> item(s) in Cart</h5>
+      <table class="table cart-table">
+    <thead>
+      <tr class="table-secondary">
+        <th scope="col">SR.NO</th>
+        <th scope="col">PRODUCTS</th>
+        <th scope="col">PRICE</th>
+      </tr>
+    </thead>
+    <tbody class="cart-body">
+      {% for product in cart.products.all %}
+      <tr class="cart-product bg-light">
+        <th scope="row">{{ forloop.counter }}</th>
+        <td><a href='{{ product.get_absolute_url }}'>{{ product.title }}</a>
+            {% include 'carts/snippets/remove-product.html' with product_id=product.id %}
+        </td>
+        <td><i class="fas fa-rupee-sign"></i><big> {{ product.price }}</big></td>
+      </tr>
+      {% endfor %}
+      <tr class="table-light">
+        <td></td>
+        <td class="text-right" ><b>SUBTOTAL:</b></td>
+        <td><span class="cart-subtotal" ><i class="fas fa-rupee-sign"></i> <big>{{ cart.subtotal }}</big></span></td>
+      </tr>
+      <tr class="table-info">
+        <td></td>
+        <td class="text-right"><b>GRAND TOTAL:</b></td>
+        <td><span class="cart-total"><big><i class="fas fa-rupee-sign"></i> {{ cart.total }}</big></span></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+      <a class="btn btn-success btn-block col-sm-12 col-lg-6" style="float:right;" href="{% url 'cart:checkout' %}">Proceed to Checkout</a>
+      <div class="cart-item-remove-form" style="display:none">
+        {% include 'carts/snippets/remove-product.html' %}
+      </div>
+
+  {% else %}
+
+      <div class="container">
+        <img class="rounded mx-auto d-block mb-3" src="{% static "img/test5.png" %}"/>
+        <h3 class="text-center">Looks like you have no items in your shopping cart</h3>
+        <h3 class="text-center">Click <a href="/products">here</a> to continue shopping</h3>
+      </div>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <h3><span class="badge badge-primary">Step 4</span> Order Details</h3>
+  {% if payment_status == True %}
+  <div class="progress mt-2">
+    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">100% Completed!!</div>
+  </div>
+  {% endif %}
+  <hr>
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      {% if payment_status == True %}
+        <h4><img src="{% static 'img/success2.png' %}" alt="" class="mb-3"> Payment Success!</h4>
+        <a href="{% url 'orders:list' %}">Track Your Orders Here</a>
+      {% endif %}
+      {% if payment_status == False %}
+        <h4><img src="{% static 'img/failed.png' %}" alt=""> Payment Failure!</h4>
+        <p>Some Error Occured with your payment, Please try again. </p>
+      {% endif %}
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
+      <ul class="list-group">
+        <li class="list-group-item" style="background-color:#2277BC;color:#fff;">ORDER DETAILS</li>
+        <li class="list-group-item">Order ID: {{ order_id }}</li>
+        <li class="list-group-item">Amount Paid: <i class="fas fa-rupee-sign"></i> {{ total }}</li>
+        {% if payment_status == True %}
+        <li class="list-group-item">Payment Status: Successful <i class="fas fa-check" style="color:green;"></i></li>
+        {% endif %}
+        {% if payment_status == False %}
+        <li class="list-group-item">Payment Status: Failed <i class="fas fa-times" style="color:red;"></i></li>
+        {% endif %}
+        <li class="list-group-item">Order Status: {{ status }}</li>
+        {% if payment_status == True %}
+        <li class="list-group-item">Estimated Delivery Date: {{ date }}</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

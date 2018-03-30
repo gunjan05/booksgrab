@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+  <div class="col-12">
+  <h3>Welcome, {{ request.user.first_name }}</h3>
+  <hr>
+  <div class="row justify-content-md-center">
+
+    <div class="col-12 col-md-3 my-3">
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Account Settings <i class="fas fa-cogs"></i></h5>
+                <div class="list-group">
+                  <a class="list-group-item" href="{% url 'account:user-update' %}">Update Profile</a>
+                  <a class="list-group-item" href="{% url 'password_change' %}">Change Password</a>
+                  <!-- <a class="list-group-item" href="{% url 'marketing-pref' %}">Email Marekting</a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  <div class="col-12 col-md-3 my-3">
+    <div class="card">
+      <div class="card-body">
+          <h5 class="card-title">My Orders <i class="fas fa-clipboard-list"></i></h5>
+            <div class="list-group">
+              <a class="list-group-item" href="{% url 'orders:list' %}">Orders</a>
+            </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-3 my-3">
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Support <i class="fas fa-phone"></i></h5>
+            <div class="list-group">
+              <a class="list-group-item" href="{% url 'contact' %}">Contact</a>
+              <a class="list-group-item" href="{% url 'contact' %}">About</a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  </div>
+  </div>
+  </div>
+</div>
+{% endblock%}

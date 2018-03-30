@@ -1,0 +1,110 @@
+{% load static %}
+{% url 'home' as home_url %}
+{% url 'contact' as contact_url %}
+{% url 'login' as login_url %}
+{% url 'logout' as logout_url %}
+{% url 'products:list' as products_list_url %}
+{% url 'products:cfa' as products_cfa_url %}
+{% url 'products:frm' as products_frm_url %}
+{% url 'products:erp' as products_erp_url %}
+{% url 'products:caia' as products_caia_url %}
+{% url 'products:others' as products_others_url %}
+{% url 'register' as register_url %}
+{% url 'cart:home' as cart_url %}
+{% url 'account:home' as account_url %}
+
+<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+
+<nav class="navbar navbar-expand-lg navbar-dark mb-3" style="background-color:#2277BC;font-family: 'Fredoka One', cursive;">
+  <div class='container-fluid'>
+  <a class="navbar-brand" href="{{ home_url }}">
+    <img src="http://getbootstrap.com/assets/brand/bootstrap-solid.svg" height='30' width='30' class='d-inline-block align-top'>
+    {{ brand_name }}
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto main-nav">
+      <li class="nav-item {% if request.path == home_url %}active{% endif %}">
+        <a class="nav-link" href="{{ home_url }}"><i class="fas fa-home"></i> Home
+          <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item {% if request.path == contact_url %}active{% endif %}">
+        <a class="nav-link" href="{{ contact_url }}"><i class="fas fa-envelope"></i> Contact</a>
+      </li>
+
+      <li class="nav-item dropdown {% if request.path == products_cfa_url %}active{% endif %}
+                                   {% if request.path == products_frm_url %}active{% endif %}
+                                   {% if request.path == products_erp_url %}active{% endif %}
+                                   {% if request.path == products_caia_url %}active{% endif %}
+                                   {% if request.path == products_others_url %}active{% endif %}">
+         <a class="nav-link dropdown-toggle dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           <i class="fas fa-book"></i> Products
+         </a>
+         <div class="dropdown-menu dropdown-content" aria-labelledby="navbarDropdown">
+           <a class="dropdown-item" href="{{ products_cfa_url }}">CFA</a>
+           <a class="dropdown-item" href="{{ products_frm_url }}">FRM</a>
+           <a class="dropdown-item" href="{{ products_erp_url }}">ERP</a>
+           <a class="dropdown-item" href="{{ products_caia_url }}">CAIA</a>
+           <a class="dropdown-item" href="{{ products_others_url }}">Others</a>
+         </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ products_list_url }}"><i class="fas fa-archive"></i> Free Resources</a>
+      </li>
+      <li class="nav-item {% if request.path == cart_url %}active{% endif %}">
+        <a class="nav-link" href="{{ cart_url }}"><img src="{% static "img/cart_small.png" %}">
+          <span class="badge badge-light"><span class="navbar-cart-count">{{ request.session.cart_total }}</span></span>
+         </a>
+      </li>
+    </ul>
+        <ul class="navbar-nav">
+        <li class="nav-item mr-5">
+          {% include 'search/snippets/search_form.html' %}
+        </li>
+        {% if request.user.is_authenticated %}
+          <li class="nav-item dropdown mr-5">
+             <a class="nav-link dropdown-toggle dropdown active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <i class="fas fa-user"></i> {{ request.user.first_name }}
+             </a>
+             <div class="dropdown-menu dropdown-content" aria-labelledby="navbarDropdown">
+               <a class="dropdown-item {% if request.path == account_url %}active{% endif %}" href="{{ account_url }}">
+                 <i class="fas fa-home"></i> Home
+               </a>
+               <a class="dropdown-item" href="{% url 'orders:list' %}">
+                 <i class="fas fa-clipboard-list"></i> My Orders
+               </a>
+               <a class="dropdown-item" href="{% url 'account:user-update' %}">
+                 <i class="fas fa-cogs"></i> Settings
+               </a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item" href="{{ logout_url }}">
+                 <i class="fas fa-sign-out-alt"></i> Logout
+               </a>
+             </div>
+          </li>
+        {% else %}
+        <li class="nav-item form-inline mr-2" >
+            <a class="btn btn-success btn-sm {% if request.path == login_url %}active{% endif %}" href="{{ login_url }}">
+              Login
+            </a>
+        </li>
+        <li class="nav-item form-inline mr-2" style="color:#fff;">or</li>
+        <li class="nav-item form-inline">
+            <a class="btn btn-sm {% if request.path == register_url %}active{% endif %}" href="{{ register_url }}" style="background-color:#7faaf9;color:#fff;">
+              Register
+            </a>
+        </li>
+        {% endif %}
+      </ul>
+  </div>
+</div>
+</nav>
+
+<style media="screen">
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+</style>

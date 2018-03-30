@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- {{ object.cart }} - {{ object.order_id }} -->
+<div class="container">
+{% if not billing_profile %}
+<h3><span class="badge badge-primary">Step 1</span> Register/Login</h3>
+<div class="progress mt-2">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+</div>
+<hr>
+<div class='row row-divided'>
+  <div class='col-lg-6 col-md-6 col-sm-12 mb-5'>
+      <p class='lead text-center'>New Customers</p>
+      <p class="text-muted text-center">Don't want to register? Its Ok, Continue as Guest</p>
+      {% url "guest_register" as guest_register_url %}
+      {% include 'accounts/guest_register.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
+  </div>
+  <div class="vertical-divider">or</div>
+  <div class='col-lg-6 col-md-6 col-sm-12'>
+      <p class='lead text-center'>Returning Customers</p>
+      <p class="text-muted text-center">Log in to speed up the checkout process and to easily track your orders</p>
+      {% include 'accounts/login_checkout.html' with form=login_form next_url=request.build_absolute_uri %}
+  </div>
+  </div>
+{% else %}
+    {% if not object.shipping_address %}
+    <h3><span class="badge badge-primary">Step 2</span> Shipping Address</h3>
+    <div class="progress mb-2">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">50%</div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            {% url 'checkout_address_create' as checkout_address_create %}
+            {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2">
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            {% url 'checkout_address_reuse' as checkout_address_reuse %}
+            {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
+        </div>
+    </div>
+    {% else %}
+        <h3><span class="badge badge-primary">Step 3</span> Review Order</h3>
+        <div class="progress mt-2">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">75%</div>
+        </div>
+        <hr>
+        <div class="row justify-content-md-center">
+          <div class="col-lg-5">
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-primary">
+                CART ITEMS
+              </li>
+              {% for product in object.cart.products.all %}
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ product.title }}</h5>
+                  <strong class="text-muted"><i class="fas fa-rupee-sign"></i> {{ product.price }}</strong>
+                </div>
+                <p class="mb-1">{{ product.short_description }}</p>
+              </a>
+              {% endfor %}
+              <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-dark mb-2">
+                <big>ORDER TOTAL</big>
+                <big><i class="fas fa-rupee-sign"></i> {{ object.total }}</big>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-5">
+            <div class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-primary">
+                ORDER DETAILS
+                <small>{{ object }}</small>
+              </li>
+              <li class="list-group-item disabled text-center"><img src="{% static 'img/Picture2.png'%}"> <big>{{ object.shipping_address.fullname }}</big></br>{{object.shipping_address.get_address}}</br></li>
+              <li class="list-group-item disabled text-center"><img src="{% static 'img/email1.png'%}"> {{ billing_profile.email }}</li>
+              <li class="list-group-item disabled text-center"><img src="{% static 'img/free-shipping.png'%}"> Shipping is Free For You !!</li>
+              <li class="list-group-item disabled text-center"><img src="{% static 'img/instamojo4.png'%}"> available for Payments</li>
+            </div>
+            <form class="form" method='POST'>
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success btn-block mt-2" name="button">Proceed to Pay</button>
+            </form>
+            <h6 class="text-muted mt-1">By clicking on the above button you will be redirected to Instamojo's Payment Gateway website.</h6>
+            <h6 class="text-muted mt-1">Please do not close your tab while making payment</h6>
+          </div>
+        </div>
+    {% endif %}
+{% endif %}
+</div>
+<style media="screen">
+.vertical-divider {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: 50%;
+  line-height: 0;
+  text-align:center;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+}
+
+.vertical-divider:before,
+.vertical-divider:after {
+  position: absolute;
+  left: 50%;
+  content: '';
+  z-index: 9;
+  border-left: 1px solid rgba(34,36,38,.15);
+  border-right: 1px solid rgba(255,255,255,.1);
+  width: 0;
+  height: calc(100% - 1rem);
+}
+
+.row-divided > .vertical-divider {
+  height: calc(75% - 4rem);
+}
+
+.vertical-divider:before {
+  top: -100%;
+}
+.vertical-divider:after {
+  top: auto;
+  bottom: 0;
+}
+
+.row-divided {
+  position:relative;
+}
+
+.row-divided > [class^="col-"],
+.row-divided > [class*=" col-"] {
+  padding-left: 30px;  /* gutter width (give a little extra room) 2x default */
+  padding-right: 30px; /* gutter width (give a little extra room) 2x default */
+}
+
+@media screen and (max-width: 480px) {
+    .vertical-divider {
+        visibility: hidden;
+    }
+}
+
+</style>
+{% endblock %}

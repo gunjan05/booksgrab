@@ -64,7 +64,7 @@ class GuestForm(forms.Form):
     email = forms.EmailField(label='', widget = forms.EmailInput(
                                 attrs={'class':'form-control email',
                                        'placeholder':'Email*'}))
-    mobile_number = PhoneNumberField(label='', widget=PhoneNumberInternationalFallbackWidget(
+    mobile_number = PhoneNumberField(label='', widget=forms.TextInput(
                                             attrs={'class':'form-control mobile_no',
                                                'placeholder':'Mobile Number*'}))
 
@@ -115,7 +115,7 @@ class RegisterForm(forms.ModelForm):
     email = forms.EmailField(label='', widget = forms.EmailInput(
                                 attrs={'class':'form-control email',
                                        'placeholder':'Email*'}))
-    mobile_number = PhoneNumberField(widget=PhoneNumberInternationalFallbackWidget(
+    mobile_number = PhoneNumberField(widget=forms.TextInput(
                                             attrs={'class':'form-control mobile_no',
                                                'placeholder':'Mobile Number*'}))
     class Meta:

@@ -8,7 +8,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class GuestDetails(models.Model):
     email          = models.EmailField()
-    mobile_number  = models.CharField(max_length=10, default='9999999999')
+    mobile_number  = PhoneNumberField(default='9999999999')
     first_name     = models.CharField(max_length=255, default='John')
     last_name      = models.CharField(max_length=255, default='Miller')
     active         = models.BooleanField(default=True)
@@ -72,7 +72,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email          = models.EmailField(max_length=255, unique=True, default='abc123@gmail.com')
-    mobile_number  = models.CharField(max_length=10, default='9999999999')
+    mobile_number  = PhoneNumberField(default='9999999999')
     first_name     = models.CharField(max_length=255, default='John')
     last_name      = models.CharField(max_length=255, default='Miller')
     active         = models.BooleanField(default=True)

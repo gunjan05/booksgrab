@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     #downloaded apps
     'phonenumber_field',
     'django_social_share',
+    'storages',
 
     #my apps
     'products',

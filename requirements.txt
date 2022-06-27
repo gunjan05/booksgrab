@@ -22,7 +22,7 @@ Pillow==5.0.0
 psycopg2==2.7.4
 PyPDF2==1.26.0
 pytz==2017.3
-reportlab==3.4.0
+reportlab==3.5.55
 requests==2.18.4
 simplejson==3.13.2
 six==1.11.0
